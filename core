@@ -4,16 +4,22 @@ Created on Nov 6, 2014
 @author: amagoon
 '''
 
+
+#    The very start of the program. User inputs the word to figure out
+#    Return: The hidden word all in uppercase
 def begin():
     print('Enter the word you would like to use.')
     word = input().upper()
     return word
 
+#    The complete hang-man grid in one list, accessible by index
+#    Return: The relevant grid string to be printed out to console.
 def grid(number):
     man = ['', ' O', ' O\n |', ' O\n\\|', ' O\n\\|/', ' O\n\\|/\n |', ' O\n\\|/\n |\n/', ' O\n\\|/\n |\n/ \\']
     return man[number]
 
-
+#    Tests whether the guessed letter is correct or not
+#    Return: True or False
 def test_letter(word, letter):
     for l in word:
         if l == letter:
@@ -22,11 +28,15 @@ def test_letter(word, letter):
         else:
             return False
 
+#    Prompts user to input guess
+#    Return: The users guessed letter
 def initiate_guess():
     print('What is your guess?')
     uguess = guess()
     return uguess
 
+#    Converts guess to uppercase and checks whether the input is more than one character
+#    Return: the guessed letter
 def guess():
     user_guess = input().upper()
     if len(user_guess) > 1:
@@ -34,22 +44,25 @@ def guess():
         initiate_guess()
     return user_guess
         
+        
+#    Converts each character in a word to spaces
+#    Return: list with hidden spaces to print to console
 def hidden_word(word):
     hidden_list = []
     for i in word:
         hidden_list.append('_')
     return hidden_list
-def spacer(number):
-    spacer_list = []
-    for i in number:
-        spacer_list.append('\n')
 
+#def replace_space(number):
+    
+
+#    Pulls together all functions and runs game
 def start():
     word_to_guess = begin()
-    print(' '.join(hidden_word(word_to_guess)))
+    print('\n' + ' '.join(hidden_word(word_to_guess)))
     users_guess = initiate_guess()
     result = test_letter(word_to_guess, users_guess)
     if result == True:
+        replace_space()
         
 start()
-        
