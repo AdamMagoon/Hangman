@@ -3,27 +3,17 @@ Created on Nov 6, 2014
 
 @author: amagoon
 '''
-import os
-
-
-#    The very start of the program. User inputs the word that will be guessed.
-#    Return: The hidden word all in uppercase
-
-
-# def begin():
-#     print('Enter the word you would like to use.')
-#     word = input().upper()
-#     return word
-
 
 #    The complete hang-man grid in one list, accessible by index
-#    Return: The relevant grid string to be printed out to console.
+#    Will return the relevant string to be printed out to console.
 def grid(number):
     man = ['', ' O', ' O\n |', ' O\n\\|', ' O\n\\|/', ' O\n\\|/\n |', ' O\n\\|/\n |\n/', ' O\n\\|/\n |\n/ \\']
     return man[number]
 
+
 #    Tests whether the guessed letter is correct or not
-#    Return: True or False
+#    Return: Updated drawing board to be printed to console
+#    Also returns a 'result' as either True or False
 def test_letter(gameword, userguess, drawing_board):
     result = False
     for letter in range(len(gameword)):
@@ -32,14 +22,6 @@ def test_letter(gameword, userguess, drawing_board):
             drawing_board[letter] = userguess
     return drawing_board, result
 
-        
-        
-#    Prompts user to input guess
-#    Return: The users guessed letter
-def initiate_guess():
-    print('What is your guess?')
-    uguess = guess()
-    return uguess
 
 #    Converts guess to uppercase and checks whether the input is more than one character
 #    Return: the guessed letter
@@ -51,42 +33,72 @@ def guess():
     return user_guess
         
         
+#    Prompts user to input guess
+#    Calls on the guess() function to ensure
+#    all parameters are valid
+#    Return: The users guessed letter
+def initiate_guess():
+    print('What is your guess?')
+    uguess = guess()
+    return uguess
+
+        
 #    Converts each character in a word to spaces
 #    Return: list with hidden spaces to print to console
+#    Have the possibility to add a 'space' check within this function
+#        Ex. - While iterating, check to see if character is blank space
 def hidden_word(word):
     hidden_list = []
     for i in word:
         hidden_list.append('_')
     return hidden_list
 
-def replace_space(word, letter):
-    for i in range(len(word)):
-        if i == letter:
-            word[i] = letter
-    return word
 
+#    Simple function to print our 'board' to console
 def print_board(board):
     print('\n' + ' '.join(board))
 
 
-    
-
 #    Pulls together all functions and runs game
 def start():
     print('Enter the word you would like to use.')
+    #    Allows the user to set the word to guess (for now)
+    #    Converts the word into all upper case for usability
+    #    Stores this value to be accessed later
     global_word = list(input().upper())
+    
+    #    Creates our initial 'drawing board' using the hidden_word() function
+    #    Creates a series of underscores to represent letters not guessed yet
     drawing_board = hidden_word(global_word)
     i = 0
+    
+    #    Creates an empty list to hold letters already guessed
     guessed_letters = []
+    
     while i < 7:
-        print('Guessed Letters: ' + ', '.join(guessed_letters))
+        #    Only print guessed letters if the user has guessed at least one letter
+        if len(guessed_letters) > 0:
+            print('Guessed Letters: ' + ', '.join(guessed_letters))
+        
+        #    This will print a new grid (the hangman guy) during each new
+        #    iteration of the while loop
         print(grid(i))
+        
+        #    Prints an updated board after each turn
         print_board(drawing_board)
+        #    As long as the person has not guessed the entire word
+        #    continue into the if statement
         if drawing_board != global_word:
+            #    Initiate new user guess and store guess into users_guess variable
             users_guess = initiate_guess()
+            #    Test the letter and update the drawing board
+            #    Also return whether it was a correct or incorrect guess
             drawing_board, result = test_letter(global_word, users_guess, drawing_board)
+            #    If the user guess was incorrect, continue into the if statement
             if result == False:
+                #    Add the incorrect guess to the guessed_letters list
                 guessed_letters.append(str(users_guess))
+                #    Initiate a new iteration
                 i += 1
                 print("Wrong!")
             else:
@@ -100,10 +112,4 @@ def start():
         print(grid(7))
         print("He's dead. You suck.")
         
-    
-    
-    
 start()
-
-        
-    
