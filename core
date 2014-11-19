@@ -3,14 +3,18 @@ Created on Nov 6, 2014
 
 @author: amagoon
 '''
+import os
 
 
-#    The very start of the program. User inputs the word to figure out
+#    The very start of the program. User inputs the word that will be guessed.
 #    Return: The hidden word all in uppercase
-def begin():
-    print('Enter the word you would like to use.')
-    word = input().upper()
-    return word
+
+
+# def begin():
+#     print('Enter the word you would like to use.')
+#     word = input().upper()
+#     return word
+
 
 #    The complete hang-man grid in one list, accessible by index
 #    Return: The relevant grid string to be printed out to console.
@@ -20,14 +24,16 @@ def grid(number):
 
 #    Tests whether the guessed letter is correct or not
 #    Return: True or False
-def test_letter(word, letter):
-    for l in word:
-        if l == letter:
-            
-            return True            
-        else:
-            return False
+def test_letter(gameword, userguess, drawing_board):
+    result = False
+    for letter in range(len(gameword)):
+        if gameword[letter] == userguess:
+            result = True
+            drawing_board[letter] = userguess
+    return drawing_board, result
 
+        
+        
 #    Prompts user to input guess
 #    Return: The users guessed letter
 def initiate_guess():
@@ -53,16 +59,51 @@ def hidden_word(word):
         hidden_list.append('_')
     return hidden_list
 
-#def replace_space(number):
+def replace_space(word, letter):
+    for i in range(len(word)):
+        if i == letter:
+            word[i] = letter
+    return word
+
+def print_board(board):
+    print('\n' + ' '.join(board))
+
+
     
 
 #    Pulls together all functions and runs game
 def start():
-    word_to_guess = begin()
-    print('\n' + ' '.join(hidden_word(word_to_guess)))
-    users_guess = initiate_guess()
-    result = test_letter(word_to_guess, users_guess)
-    if result == True:
-        replace_space()
+    print('Enter the word you would like to use.')
+    global_word = list(input().upper())
+    drawing_board = hidden_word(global_word)
+    i = 0
+    guessed_letters = []
+    while i < 7:
+        print('Guessed Letters: ' + ', '.join(guessed_letters))
+        print(grid(i))
+        print_board(drawing_board)
+        if drawing_board != global_word:
+            users_guess = initiate_guess()
+            drawing_board, result = test_letter(global_word, users_guess, drawing_board)
+            if result == False:
+                guessed_letters.append(str(users_guess))
+                i += 1
+                print("Wrong!")
+            else:
+                print("Correct!")
+        else:
+            print("Game Over! You win!")
+            break
+    if drawing_board == global_word:
+        print("You win!!!")
+    else:
+        print(grid(7))
+        print("He's dead. You suck.")
         
+    
+    
+    
 start()
+
+        
+    
