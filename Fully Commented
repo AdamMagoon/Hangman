@@ -25,11 +25,20 @@ def test_letter(gameword, userguess, drawing_board):
 
 #    Converts guess to uppercase and checks whether the input is more than one character
 #    Return: the guessed letter
-def guess():
+def guess(list):
+    #    Assigns the user input to a variable
     user_guess = input().upper()
     if len(user_guess) > 1:
         print('Only one guess is allowed at a time.')
+        #    Recursion!
         initiate_guess()
+    for i in range(len(list)):
+        #    If letter matches a letter in the list
+        #    return True
+        if user_guess == list[i]:
+            print('You have already guessed that letter. Please guess again.')
+            user_guess = initiate_guess(list)
+            break
     return user_guess
         
         
@@ -37,12 +46,11 @@ def guess():
 #    Calls on the guess() function to ensure
 #    all parameters are valid
 #    Return: The users guessed letter
-def initiate_guess():
+def initiate_guess(list):
     print('What is your guess?')
-    uguess = guess()
+    uguess = guess(list)
     return uguess
 
-        
 #    Converts each character in a word to spaces
 #    Return: list with hidden spaces to print to console
 #    Have the possibility to add a 'space' check within this function
@@ -57,8 +65,8 @@ def hidden_word(word):
 #    Simple function to print our 'board' to console
 def print_board(board):
     print('\n' + ' '.join(board))
-
-
+    
+    
 #    Pulls together all functions and runs game
 def start():
     print('Enter the word you would like to use.')
@@ -90,14 +98,13 @@ def start():
         #    continue into the if statement
         if drawing_board != global_word:
             #    Initiate new user guess and store guess into users_guess variable
-            users_guess = initiate_guess()
-            #    Test the letter and update the drawing board
+            users_guess = initiate_guess(guessed_letters)
             #    Also return whether it was a correct or incorrect guess
             drawing_board, result = test_letter(global_word, users_guess, drawing_board)
+            #    Add the guess to the guessed_letters list
+            guessed_letters.append(str(users_guess))
             #    If the user guess was incorrect, continue into the if statement
             if result == False:
-                #    Add the incorrect guess to the guessed_letters list
-                guessed_letters.append(str(users_guess))
                 #    Initiate a new iteration
                 i += 1
                 print("Wrong!")
