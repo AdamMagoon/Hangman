@@ -4,6 +4,10 @@ Created on Nov 6, 2014
 @author: amagoon
 '''
 
+
+
+clear = "\n" * 20
+
 #    The complete hang-man grid in one list, accessible by index
 #    Will return the relevant string to be printed out to console.
 def grid(number):
@@ -28,6 +32,13 @@ def test_letter(gameword, userguess, drawing_board):
 def guess(list):
     #    Assigns the user input to a variable
     user_guess = input().upper()
+    #    Tests whether the user input is a number or a letter
+    try:
+        float(user_guess)
+        print('You can not guess a number. Please guess a letter')
+        initiate_guess(list)
+    except:
+        pass 
     if len(user_guess) > 1:
         print('Only one guess is allowed at a time.')
         #    Recursion!
@@ -91,6 +102,7 @@ def start():
         #    This will print a new grid (the hangman guy) during each new
         #    iteration of the while loop
         print(grid(i))
+        print('\n')
         
         #    Prints an updated board after each turn
         print_board(drawing_board)
@@ -107,13 +119,17 @@ def start():
             if result == False:
                 #    Initiate a new iteration
                 i += 1
+                print(clear)
                 print("Wrong!")
             else:
+                print(clear)
                 print("Correct!")
         else:
+            print(clear)
             print("Game Over! You win!")
             break
     else:
+        print(clear)
         print(grid(7))
         print("He's dead. You suck.")
         
