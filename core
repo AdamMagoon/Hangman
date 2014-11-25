@@ -4,6 +4,7 @@ Created on Nov 6, 2014
 @author: amagoon
 '''
 
+clear = "\n" * 20
 
 def grid(number):
     man = ['', ' O', ' O\n |', ' O\n\\|', ' O\n\\|/', ' O\n\\|/\n |', ' O\n\\|/\n |\n/', ' O\n\\|/\n |\n/ \\']
@@ -19,6 +20,12 @@ def test_letter(gameword, userguess, drawing_board):
 
 def guess(list):
     user_guess = input().upper()
+    try:
+        float(user_guess)
+        print('You can not guess a number. Please guess a letter')
+        initiate_guess(list)
+    except:
+        pass 
     if len(user_guess) > 1:
         print('Only one guess is allowed at a time.')
         initiate_guess()
@@ -53,6 +60,7 @@ def start():
         if len(guessed_letters) > 0:
             print('Guessed Letters: ' + ', '.join(guessed_letters))
         print(grid(i))
+        print('\n')
         print_board(drawing_board)
         if drawing_board != global_word:
             users_guess = initiate_guess(guessed_letters)
@@ -60,13 +68,17 @@ def start():
             guessed_letters.append(str(users_guess))
             if result == False:
                 i += 1
+                print(clear)
                 print("Wrong!")
             else:
+                print(clear)
                 print("Correct!")
         else:
+            print(clear)
             print("Game Over! You win!")
             break
     else:
+        print(clear)
         print(grid(7))
         print("He's dead. You suck.")
         
